@@ -119,3 +119,32 @@ cardano-cli transaction submit \
 
 16. Confirm transaction from testnet.cardanoscan.io
 > https://testnet.cardanoscan.io/tokenPolicy/8f7633ebcf477753565e87f69e1d9c791bc39adccd10390f33720ab3
+
+## Transfer the NFT
+
+17. Build the transaction
+```
+cardano-cli transaction build \
+  --alonzo-era \
+  --tx-in c2f623a2c3a0d05a7f94a8a2db6921f27cf281bc8f489b7861c7b9bbe5a8059a#0 \
+  --tx-out addr_test1qquw7k22ae7xf772l4ljuvp7ncsq4uzsl2zlvtqlr5kf9lclzytcyjujtzmedxzjgq92kwg48my4dsdnzcmdj6eh5sxqy4j3up+5000000+"1 $(cat policy.id).nano0001" \
+  --change-address $(cat key1/payment.addr) \
+  --testnet-magic 1097911063 \
+  --out-file transfer.raw
+```
+
+18. Sign the transaction
+```
+cardano-cli transaction sign \
+  --signing-key-file key1/payment.skey \
+  --testnet-magic 1097911063 \
+  --tx-body-file transfer.raw \
+  --out-file transfer.signed
+```
+
+19. Submit the transaction
+```
+cardano-cli transaction submit \
+  --testnet-magic 1097911063 \
+  --tx-file transfer.signed
+```
